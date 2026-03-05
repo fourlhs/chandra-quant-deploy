@@ -1,0 +1,7 @@
+openai
+pynvml
+beautifulsoup4
+pdf2image
+editdistance
+tabulate
+Pillow

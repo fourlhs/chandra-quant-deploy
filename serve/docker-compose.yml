@@ -1,0 +1,40 @@
+services:
+  chandra:
+    image: vllm/vllm-openai:latest
+    container_name: chandra-ocr
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["${GPU_INDEX:-0}"]
+              capabilities: [gpu]
+
+    shm_size: "8gb"
+
+    volumes:
+      - ${OUTPUT_PATH}:/model:ro
+
+    ports:
+      - "${SERVE_PORT:-8000}:8000"
+
+    environment:
+      - VLLM_WORKER_MULTIPROC_METHOD=spawn
+
+    command: >
+      /model
+      --dtype bfloat16
+      --max-model-len ${MAX_MODEL_LEN:-8192}
+      --gpu-memory-utilization ${GPU_MEM_UTIL:-0.90}
+      --served-model-name chandra
+      --disable-log-requests
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+
+    restart: unless-stopped

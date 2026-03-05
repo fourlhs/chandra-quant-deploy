@@ -1,0 +1,15 @@
+chandra/
+chandra-fp8/
+chandra-int4/
+
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.python-version
+
+local.env
+serve/.env
+
+.claude/
+.DS_Store

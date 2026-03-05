@@ -1,0 +1,8 @@
+llmcompressor
+transformers>=4.57.1
+torch>=2.4.0
+torchvision
+accelerate
+pdf2image
+Pillow
+python-dotenv
